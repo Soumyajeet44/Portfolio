@@ -1,0 +1,18 @@
+const express = require("express");
+const router = express.Router();
+const Project = require("../models/Project");
+
+// Get all projects
+router.get("/", async (req, res) => {
+    const projects = await Project.find().sort({ date: -1 });
+    res.json(projects);
+});
+
+// Add project
+router.post("/", async (req, res) => {
+    const project = new Project(req.body);
+    await project.save();
+    res.json({ message: "Project added!" });
+});
+
+module.exports = router;
