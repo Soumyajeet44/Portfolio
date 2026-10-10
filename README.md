@@ -1,112 +1,170 @@
-# Soumyajeet Mahanta — MERN Portfolio
+# MERN Stack Developer Portfolio
 
-A responsive developer portfolio built with **React + Vite**, **Node.js + Express**, and **MongoDB + Mongoose**. It includes a public profile/projects/contact page, dark/light theme, and a private admin dashboard for project CRUD and contact inbox management.
+A full-stack developer portfolio built with the **MERN stack** — MongoDB, Express.js, React, and Node.js. It showcases my profile, technical skills, projects, education, activities, and contact information, with a private admin dashboard for managing projects and contact messages.
+
+**Live Demo:** [View Portfolio](https://soumyajeet-portfolioo.netlify.app)  
+**Backend API:** [Portfolio API](https://soumyajeet-portfolio-api.onrender.com/api/health)  
+**GitHub:** [Soumyajeet44](https://github.com/Soumyajeet44)  
+**LinkedIn:** [Connect with me](https://www.linkedin.com/in/soumya06)
+
+---
 
 ## Features
 
-- Responsive portfolio with About, Skills, Projects, Education, Activities and Contact sections.
-- Dark/light mode persisted in local storage.
-- Projects loaded from MongoDB with starter project highlights as a graceful frontend fallback.
-- Contact form writes messages to MongoDB; validation, honeypot and rate limit included.
-- Admin login only: there is no public registration endpoint.
-- Passwords hashed with bcrypt; JWT stored in an HTTP-only cookie; protected project and inbox routes.
-- Admin dashboard supports create, read, update and delete projects and delete contact messages.
-- Helmet security headers, CORS allow-list, request size limits and API rate limits.
+- **Responsive UI:** About, Skills, Projects, Education, Activities, and Contact sections.
+- **Dark and Light Themes:** Theme preference persists using local storage.
+- **Dynamic Projects:** Projects load from MongoDB, with frontend fallback content.
+- **Contact Form:** Stores messages in MongoDB with validation, a honeypot, and rate limiting.
+- **Private Admin Dashboard:** Manage projects and contact messages after authentication.
+- **Secure Authentication:** Password hashing with bcrypt, JWT authentication, and HTTP-only cookies.
+- **API Protection:** Helmet security headers, CORS allow-list, request size limits, and API rate limits.
+- **No Public Registration:** Administrator accounts are provisioned through the backend.
 
-## Folder structure
+## Tech Stack
+
+| Area | Technologies |
+|---|---|
+| Frontend | React, Vite, JavaScript, CSS |
+| Backend | Node.js, Express.js |
+| Database | MongoDB, Mongoose |
+| Authentication | JWT, bcrypt, HTTP-only cookies |
+| Security | Helmet, CORS, rate limiting |
+| Deployment | Netlify (frontend), Render (backend) |
+
+## Project Structure
 
 ```text
 Portfolio/
-├── frontend/                  # React + Vite application
-│   ├── public/images/         # Profile image placeholder
-│   ├── public/resume.pdf      # Resume download
-│   └── src/                   # Pages, API client, styles
-└── portfolio-backend/         # Express + MongoDB API
-    ├── middleware/            # Admin authorization
-    ├── models/                # User, Project, Contact
-    ├── routes/                # Auth, projects, contact
-    └── scripts/createAdmin.js # Create/update the private admin account
+├── frontend/
+│   ├── public/
+│   │   ├── images/
+│   │   └── resume.pdf
+│   └── src/
+└── portfolio-backend/
+    ├── middleware/
+    ├── models/
+    ├── routes/
+    └── scripts/
+        └── createAdmin.js
 ```
 
-## Requirements
+## Getting Started
+
+### Prerequisites
 
 - Node.js 20 or newer
 - npm
-- MongoDB Atlas database or a local MongoDB instance
+- MongoDB Atlas or a local MongoDB instance
 
-## 1. Configure the backend
+### 1. Clone the repository
+
+```bash
+git clone https://github.com/Soumyajeet44/Portfolio.git
+cd Portfolio
+```
+
+### 2. Configure the backend
 
 ```bash
 cd portfolio-backend
 npm install
 ```
 
-Copy `.env.example` to `.env` and set your values:
+Copy `.env.example` to `.env` and configure the required environment variables:
 
-- `MONGO_URI`: MongoDB connection string; ensure your Atlas network access and database user are configured.
-- `JWT_SECRET`: a random secret at least 32 characters long. Generate one with `node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"`.
-- `ADMIN_EMAIL`, `ADMIN_NAME`, `ADMIN_PASSWORD`: the private administrator's credentials. Use a unique password of at least 12 characters.
-- `CLIENT_ORIGINS`: `http://localhost:5173` for local development. In production, set this to your exact deployed frontend origin.
+- `MONGO_URI` — MongoDB connection string.
+- `JWT_SECRET` — A strong, randomly generated secret of at least 32 characters.
+- `ADMIN_NAME` — Administrator's name.
+- `ADMIN_EMAIL` — Administrator's email.
+- `ADMIN_PASSWORD` — A unique administrator password of at least 12 characters.
+- `CLIENT_ORIGINS` — The permitted frontend origin, such as `http://localhost:5173`.
 
-Create the admin account (or reset its password):
+Generate a random JWT secret using Node.js:
+
+```bash
+node -e "console.log(require('crypto').randomBytes(48).toString('hex'))"
+```
+
+Create or update the administrator account:
 
 ```bash
 npm run create-admin
 ```
 
-Start the API:
+Start the backend API:
 
 ```bash
 npm run dev
 ```
 
-API health check: `http://localhost:5000/api/health`.
+The API runs at `http://localhost:5000` by default.
 
-## 2. Start the frontend
+Health check: `http://localhost:5000/api/health`
 
-In a second terminal:
+### 3. Configure the frontend
+
+Open a second terminal:
 
 ```bash
 cd frontend
 npm install
-npm run dev
 ```
 
-Open `http://localhost:5173`. The API defaults to `http://localhost:5000/api`. To use another API URL, create `frontend/.env` with:
+Create `frontend/.env` if you need to specify a custom API URL:
 
 ```env
 VITE_API_URL=http://localhost:5000/api
 ```
 
-## 3. Use the admin dashboard
+Start the frontend:
 
-Visit `http://localhost:5173/admin` and sign in with the account created by `npm run create-admin`. Add and manage projects in the dashboard. The public portfolio remains viewable without login. Never add admin credentials or JWT secrets to frontend environment variables.
+```bash
+npm run dev
+```
 
-## 4. Add your actual profile photo and verify personal details
+Open `http://localhost:5173` in your browser.
 
-Replace `frontend/public/images/profile-placeholder.jpg` with a square or portrait photo of yourself and update the image filename in `frontend/src/App.jsx` if needed. The current image is an illustration placeholder, not a real photograph. Review `profile` in `frontend/src/App.jsx` and confirm your public email, phone/location, college, CGPA, and graduation dates before deployment. The phone number is intentionally not displayed on the public page by default.
+### 4. Access the Admin Dashboard
 
-The bundled `frontend/public/resume.pdf` is a resume copy. Replace it whenever you update your resume.
+Visit `http://localhost:5173/admin` and sign in using the administrator account provisioned through the backend.
 
-## 5. Deploy
+The dashboard supports project management and contact inbox management. Public visitors can view the portfolio without logging in.
 
-1. Deploy the API from `portfolio-backend` to a Node-compatible host.
-2. Set the backend environment variables in the host dashboard; do not upload `.env`.
-3. Set `NODE_ENV=production`, a strong `JWT_SECRET`, `MONGO_URI`, `ADMIN_*`, and `CLIENT_ORIGINS` to the exact frontend URL.
-4. Deploy `frontend` to a static host using `npm run build` (publish the `dist` directory).
+**Security:** Never place admin credentials, database credentials, or JWT secrets in frontend environment variables.
+
+## Deployment
+
+The project uses the following deployment setup:
+
+- **Frontend:** Netlify
+- **Backend:** Render
+- **Database:** MongoDB Atlas
+
+For deployment:
+
+1. Deploy `portfolio-backend` to a Node.js-compatible hosting provider.
+2. Configure the backend environment variables in the hosting dashboard.
+3. Set `NODE_ENV=production` and configure `CLIENT_ORIGINS` to the exact deployed frontend origin.
+4. Deploy `frontend` using `npm run build` and publish the `dist` directory.
 5. Set `VITE_API_URL` to the deployed API base URL and rebuild the frontend.
-6. Ensure HTTPS is enabled on both frontend and API. Because the admin cookie is HTTP-only, frontend requests use `credentials: 'include'` and the API CORS origin must match exactly.
-7. Run `npm run create-admin` in the backend deployment environment once to provision the admin account.
+6. Enable HTTPS and verify that credentialed requests and cookie settings work correctly.
+7. Provision the administrator account using the backend's `npm run create-admin` script in the appropriate deployment environment.
 
-## Security notes
+Never commit `.env` files or production secrets to GitHub.
 
-- `.env` files and `node_modules` are excluded from the source archive. Keep secrets out of GitHub.
-- This app intentionally does not allow public account creation or user roles other than admin.
-- Rotate any database password or API secret that was ever committed or shared. Removing a secret from a working copy does not revoke it.
-- Before public launch, test login/logout, project CRUD, contact submissions, and the health endpoint against your own configured MongoDB instance.
+## Security Considerations
 
-## Project links
+- Environment files and `node_modules` should remain excluded from version control.
+- Public account registration is intentionally disabled.
+- Test authentication, logout, project CRUD, contact submissions, and API health after deployment.
+- If a credential or secret has ever been exposed, rotate it. Removing it from the current code alone does not invalidate it.
 
-- GitHub profile: https://github.com/Soumyajeet44
-- LinkedIn: https://www.linkedin.com/in/soumya06
-- CertiFlow repository: https://github.com/Soumyajeet44/certiflow
+## Related Projects
+
+- [CertiFlow](https://github.com/Soumyajeet44/certiflow)
+- [GitHub Profile](https://github.com/Soumyajeet44)
+- [LinkedIn Profile](https://www.linkedin.com/in/soumya06)
+
+---
+
+*Built to showcase my full-stack development skills and practical experience with the MERN stack.*
